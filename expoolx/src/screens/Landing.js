@@ -1,42 +1,42 @@
-import { StyleSheet, Button ,Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Button, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 
-export default function Landing ({ navigation }) {
-    
-    
+export default function Landing({ navigation }) {
+
+
 
     return (
         <View style={styles.container}>
-          <Image
-          source={require('../assets/logo.jpg')}
-          style={styles.img}></Image>
-          <Text style={styles.heading}>WELCOME TO OLX</Text>
-          <Text style={styles.txt}>The trusted community of buyers and sellers</Text>
-          
-        <View style={styles.btn}>
+            <Image
+                source={require('../../assets/logo.jpg')}
+                style={styles.img}></Image>
+            <Text style={styles.heading}>WELCOME TO OLX</Text>
+            <Text style={styles.txt}>The trusted community of buyers and sellers</Text>
 
-            <TouchableOpacity style={styles.box1}>
-                <Image source={require('../assets/fb.png')}
-                    style={styles.icon1}
-                ></Image>
-                <Text style={styles.txt1}>Sign in with Facebook</Text>
-            </TouchableOpacity>
+            <View style={styles.btn}>
 
-            <TouchableOpacity style={styles.box2}>
-                <Image source={require('../assets/google.png')}
-                    style={styles.icon2}
-                 ></Image>
-                 <Text style={styles.txt2}>Sign in with Google</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.box1}>
+                    <Image source={require('../../assets/fb.png')}
+                        style={styles.icon1}
+                    ></Image>
+                    <Text style={styles.txt1}>Sign in with Facebook</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity style={styles.box2} 
-            onPress={() => navigation.navigate('Login')}>
-                <Image source={require('../assets/email.png')}
-                    style={styles.icon3}
-                ></Image>
-                <Text style={styles.txt3}>Login via OLX</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.box2}>
+                    <Image source={require('../../assets/google.png')}
+                        style={styles.icon2}
+                    ></Image>
+                    <Text style={styles.txt2}>Sign in with Google</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.box2}
+                    onPress={() => navigation.navigate('Login')}>
+                    <Image source={require('../../assets/email.png')}
+                        style={styles.icon3}
+                    ></Image>
+                    <Text style={styles.txt3}>Login via OLX</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

@@ -38,47 +38,47 @@ export default function Postad({ navigation }) {
       picture = result.uri;
     }
 
-    
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function () {
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", picture, true);
-        xhr.send(null);
-      });
-      const ref = firebase
-        .storage()
-        .ref()
-        .child(`Pictures/Image1${Math.random()}`);
 
-      const snapshot = ref.put(blob);
-      snapshot.on(
-        firebase.storage.TaskEvent.STATE_CHANGED,
-        () => {
-          // setUploading(true)
-          console.log("");
-        },
-        (error) => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", picture, true);
+      xhr.send(null);
+    });
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(`Pictures/Image1${Math.random()}`);
+
+    const snapshot = ref.put(blob);
+    snapshot.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      () => {
+        // setUploading(true)
+        console.log("");
+      },
+      (error) => {
+        // setUploading(false)
+        console.log(error);
+        blob.close();
+        return;
+      },
+      () => {
+        snapshot.snapshot.ref.getDownloadURL().then((url) => {
           // setUploading(false)
-          console.log(error);
+          console.log("Download URL: ", url);
+          setAdsDetails({ ...adsDetails, ["img"]: url });
           blob.close();
-          return;
-        },
-        () => {
-          snapshot.snapshot.ref.getDownloadURL().then((url) => {
-            // setUploading(false)
-            console.log("Download URL: ", url);
-            setAdsDetails({ ...adsDetails, ["img"]: url });
-            blob.close();
-            return url;
-          });
-        }
-      );
+          return url;
+        });
+      }
+    );
   };
 
   // console.log("img", image);
@@ -91,30 +91,30 @@ export default function Postad({ navigation }) {
 
 
   const submit = async () => {
-   
-      if (
-        !adsDetails.title ||
-        !adsDetails.description ||
-        !adsDetails.price ||
-        !adsDetails.location ||
-        !adsDetails.img
-      ) {
-        alert("all fields are required");
-      } else {
-        axios
-          .post("https://average-crown-ant.cyclic.app/ads/insert", adsDetails)
-          .then((res) => done(res))
-          .catch((err) => console.log("err", err));
-        // alert('posted')
-      }
+
+    if (
+      !adsDetails.title ||
+      !adsDetails.description ||
+      !adsDetails.price ||
+      !adsDetails.location ||
+      !adsDetails.img
+    ) {
+      alert("all fields are required");
+    } else {
+      axios
+        .post("https://average-crown-ant.cyclic.app/ads/insert", adsDetails)
+        .then((res) => done(res))
+        .catch((err) => console.log("err", err));
+      // alert('posted')
     }
-  
-    useEffect(() => {
-      console.log(adsDetails)
-       if(adsDetails.img){
-        setShowPostBtn(true);
-       }
-    }, [adsDetails])
+  }
+
+  useEffect(() => {
+    console.log(adsDetails)
+    if (adsDetails.img) {
+      setShowPostBtn(true);
+    }
+  }, [adsDetails])
 
   const done = () => {
     alert("posted");
@@ -127,11 +127,11 @@ export default function Postad({ navigation }) {
       <View style={styles.head}>
         {
           disableText ? <>
-          <Image source={require("../assets/olx.jpg")} style={styles.img}></Image>
-          <Text style={styles.text}>SELL ON OLX</Text>
+            <Image source={require("../../assets/olx.jpg")} style={styles.img}></Image>
+            <Text style={styles.text}>SELL ON OLX</Text>
           </>
-          : 
-          <Image source={require("../assets/olx.jpg")} style={styles.olx}></Image>
+            :
+            <Image source={require("../../assets/olx.jpg")} style={styles.olx}></Image>
         }
       </View>
       <ScrollView style={styles.adsDetails}>
@@ -143,7 +143,7 @@ export default function Postad({ navigation }) {
               onChangeText={(e) => updateForm(e, "title")}
               onFocus={() => setDisableText(false)}
               onBlur={() => setDisableText(true)}
-              />
+            />
           </View>
           <View style={styles.box}>
             <TextInput
@@ -154,7 +154,7 @@ export default function Postad({ navigation }) {
               keyboardAppearance="dark"
               onFocus={() => setDisableText(false)}
               onBlur={() => setDisableText(true)}
-              />
+            />
           </View>
           <View style={styles.box}>
             <TextInput
@@ -163,7 +163,7 @@ export default function Postad({ navigation }) {
               onChangeText={(e) => updateForm(e, "description")}
               onFocus={() => setDisableText(false)}
               onBlur={() => setDisableText(true)}
-              />
+            />
           </View>
           <View style={styles.box}>
             <TextInput
@@ -172,7 +172,7 @@ export default function Postad({ navigation }) {
               onChangeText={(e) => updateForm(e, "location")}
               onFocus={() => setDisableText(false)}
               onBlur={() => setDisableText(true)}
-              />
+            />
           </View>
           <TouchableOpacity style={styles.btn1} onPress={pickImage}>
             <Text style={styles.log}>Select image</Text>

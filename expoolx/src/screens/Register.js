@@ -27,11 +27,11 @@ export default function Register({ navigation }) {
       <View style={styles.head}>
         {
           disableText ? <>
-            <Image source={require("../assets/olx.jpg")} style={styles.img}></Image>
+            <Image source={require("../../assets/olx.jpg")} style={styles.img}></Image>
             <Text style={styles.text}>Register in OLX</Text>
           </>
             :
-            <Image source={require("../assets/olx.jpg")} style={styles.olx}></Image>
+            <Image source={require("../../assets/olx.jpg")} style={styles.olx}></Image>
         }
       </View>
       <View style={styles.form}>

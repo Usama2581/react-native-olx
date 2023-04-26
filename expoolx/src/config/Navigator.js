@@ -13,12 +13,12 @@ import Account from "../screens/Account";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // import Icon form 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/Ionicons";
-import { useIsFocused } from "@react-navigation/native";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+
 
 export default function Navigator() {
-  const [user, setUser] = useState("");
-  const Stack = createNativeStackNavigator();
+
+  // const Stack = createNativeStackNavigator();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const auth = getAuth();
@@ -29,47 +29,56 @@ export default function Navigator() {
         setUser(false);
       }
     });
-  }, []);
+  }, [user]);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name=" " component={Tabnavigator} />
-        <Stack.Screen name="Detail" component={user ? Details : Landing} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Sell" component={user ? Postad : Landing} />
-      </Stack.Navigator>
+      { user ? <StackNavigator /> : <AuthNavigator /> }
     </NavigationContainer>
   );
 }
 
-function Tabnavigator() {
-  const Tab = createBottomTabNavigator();
-  // const focused = useIsFocused();
-  const [user, setUser] = useState("");
+
+
+
+function StackNavigator() {
   const Stack = createNativeStackNavigator();
-  useEffect(() => {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(true);
-      } else {
-        setUser(false);
-      }
-    });
-  }, []);
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={Tabnavigator} />
+      {/* <Stack.Screen name="Home" component={Home} /> */}
+      <Stack.Screen name="Details" component={Details} />
+      {/* <Stack.Screen name="Sell" component={Postad} /> */}
+    </Stack.Navigator>
+  )
+}
+
+
+function AuthNavigator() {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Landing" component={Landing} />
+    </Stack.Navigator>
+  )
+
+}
+
+
+
+function Tabnavigator() {
+
+  const Tab = createBottomTabNavigator();
+  // console.log('tab',user)
+
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarHideOnKeyboard: true,
         tabBarStyle: {
-          height: 70,
-          // position: 'absolute',
-          //  bottom: 16,
-          //  left: 16,
-          //  right: 16,
+          height: 60,
           backgroundColor: "#E8E8E6",
           backgroundColor: "#F5F5F5",
         },
@@ -78,13 +87,13 @@ function Tabnavigator() {
           color: "black",
           fontWeight: "500",
         },
+        headerShown: false,
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="home"
         component={Home}
         options={{
-          headerShown: false,
           // tabBarActiveBackgroundColor: 'white',
           // tabBarInactiveBackgroundColor: 'red',
           tabBarIcon: ({ focused }) => {
@@ -100,40 +109,19 @@ function Tabnavigator() {
       />
       <Tab.Screen
         name="Sell"
-        component={user ? Postad : Landing}
-        options={({ route }) => {
-          const focusedRouteName = getFocusedRouteNameFromRoute(route);
-          // alert(focusedRouteName)
-          if (focusedRouteName === "Landing") {
-            return {
-              tabBarStyle: { display: "flex" },
-              headerShown: false,
-              tabBarIcon: ({ focused }) => {
-                return (
-                  <Icon
-                    name={focused ? "add-circle" : "add-circle-outline"}
-                    size={30}
-                    color="black"
-                    // color={focused ? 'white' : 'black'}
-                  />
-                );
-              },
-            };
-          }
-          return {
-            tabBarStyle: { display: "none" },
-            headerShown: false,
-              tabBarIcon: ({ focused }) => {
-                return (
-                  <Icon
-                    name={focused ? "add-circle" : "add-circle-outline"}
-                    size={30}
-                    color="black"
-                    // color={focused ? 'white' : 'black'}
-                  />
-                );
-              }
-          };
+        component={Postad}
+        options={{
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Icon
+                name={focused ? "add-circle" : "add-circle-outline"}
+                size={30}
+                color="black"
+              // color={focused ? 'white' : 'black'}
+              />
+            );
+          },
+
         }}
       />
       <Tab.Screen
